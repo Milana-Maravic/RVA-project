@@ -1,0 +1,52 @@
+<div class="container">
+    <h3 mat-dialog-title *ngIf="flag == 1">Dodavanje departmana</h3>
+    <h3 mat-dialog-title *ngIf="flag == 2">Ažuriranje departmana: {{data.id}}</h3>
+    <h3 mat-dialog-title *ngIf="flag == 3">Brisanje departmana: {{data.id}}</h3>
+
+    <form class="mat-dialog-content" #formControl="ngForm">
+        <div class="form">
+            <mat-form-field>
+                <input matInput placeholder="Naziv" name="Naziv" [(ngModel)]="data.naziv"
+                    required /> 
+            </mat-form-field>
+        </div>
+
+        <div class="form">
+            <mat-form-field>
+                <input matInput placeholder="Oznaka" name="Oznaka" [(ngModel)]="data.oznaka"
+                    required />
+            </mat-form-field>
+        </div>
+
+        <div class="form">
+            <mat-form-field *ngIf="flag == 1">
+                <mat-select [(ngModel)]="data.fakultet" placeholder="Fakultet" name="Fakultet" required>
+                <mat-option *ngFor="let fakultet of fakulteti" [value]="fakultet">
+                    {{fakultet.naziv}}
+                </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div class="form">
+            <mat-form-field *ngIf="flag == 2 || flag == 3">
+                <mat-select [compareWith]="compare" placeholder="Fakultet" [(ngModel)]="data.fakultet"
+                    name="Fakultet" [disabled]="flag == 3" required>
+                    <mat-option *ngFor="let fakultet of fakulteti" [value]="fakultet">
+                        {{fakultet.naziv}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+
+    <div class="mat-dialog-actions">
+        <button matButton *ngIf="flag==1" type="submit" [mat-dialog-close]="1" 
+            (click)="add()">Sačuvaj</button>
+        <button matButton *ngIf="flag==2" type="submit" [mat-dialog-close]="1" 
+            (click)="update()">Modifikuj</button>
+        <button matButton *ngIf="flag==3" mat-dialog-close="1" (click)="delete()">Obriši</button>
+        <button matButton (click)="cancel()">Poništi</button>
+    </div>
+    </form>
+</div>
